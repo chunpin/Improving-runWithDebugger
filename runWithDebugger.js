@@ -19,47 +19,38 @@ function sayFullName(first, last) {
 
 
 function runWithDebugger(callback, optionalArgumentsForCallBackAsArray){
-	var callbackIsFunction = (typeof callback === "function");
+	var callbackIsFunction = (typeof callback === "function") ? true : false ;
+	var optionalArgumentsForCallBackAsArray = (Array.isArray(optionalArgumentsForCallBackAsArray))? true: false ;
+
+
+	
 	// callback is a function
 	if(callbackIsFunction){
-		debugger;
-		sayHi();
+		// if There is optional argument AND it is an Array, run callback function with optional Array passed in
+		if(arguments.length > 1 && optionalArgumentsForCallBackAsArray ){
+			debugger;
+            callback.apply(this, optionalArgumentsForCallBackAsArray);	
+ 		
+ 		// if There NO optional argument AND it is NOT an Array, throw error
+        } else if (arguments.length > 1 && !optionalArgumentsForCallBackAsArray ){	
+        	throw new Error('please pass the valid Array as second argument');
+        // There's NO optional argument, run callback
+		} else {
+			debugger;
+			sayHi();
+		}
+
+		
 	// callback is NOT a function, throw error
 	} else {
-		throw new Error('please pass a valid callback function');
+		throw new Error('please pass a valid callback function into runWithDebugger');
 	}
 }
 
 
 
+runWithDebugger(sayHiTo, ['james']);
 
 
- 
 
-	// there is at least one argument pass in
-	if(arguments.length >= 1 ){
-		 // check if callback is a function first  
-		 if(typeof callback === "function") {
-			if(arguments.length === 1){
-				debugger;
-				callback();
-			// there are multi optional arguments pass in
-			} else {
-				//check if optionalArgumentsForCallBackAsArray is array
-				if(Array.isArray(optionalArgumentsForCallBackAsArray)){
-					debugger;
-					callback.apply(this, optionalArgumentsForCallBackAsArray);		
-				} else {
-				// print out error message because  optionalArgumentsForCallBackAsArray is not a array
-				console.error('please pass the array as second argument into "runWithDebugger" function ');
-			}		
-		 // print out error message because callback is not a function			
-		 } else {
-		 	console.error('please pass a function as first argument into "runWithDebugger" function');
-		 }
-	// there NO argument pass in
-	} else {
-		console.error('forgot to pass callback function ?');
-	}
 
-};
